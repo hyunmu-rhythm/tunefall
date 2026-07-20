@@ -55,3 +55,19 @@
 - HARD : 고수용
 
 ## 기록 데이터 저장 위치
+C:\Users[사용자이름]\AppData\Roaming\Godot\app_userdata\TUNEFALL
+├── songs\ → 곡 데이터 및 기록
+└── settings.json → 키 설정, 볼륨, 노트 속도
+
+## 업데이트 방법
+
+게임 실행 시 새 버전이 있으면 자동으로 알림이 뜹니다.
+곡 데이터와 설정은 업데이트해도 유지됩니다.
+
+## 제거 방법
+
+제어판 → 프로그램 추가/제거 → TUNEFALL → 제거
+
+## 문의사항
+
+[![Discord](https://img.shields.io/badge/Discord-참여하기-5865F2?logo=discord)](https://discord.gg/5pX93uXTYv)
