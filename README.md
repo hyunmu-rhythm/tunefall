@@ -1,7 +1,5 @@
 # TUNEFALL 🎵
 
-![Downloads](https://img.shields.io/github/downloads/hyunmu-rhythm/tunefall/total)
-
 유튜브 URL 로 곡을 추가하고 플레이하는 리듬게임입니다.
 
 ## 다운로드
