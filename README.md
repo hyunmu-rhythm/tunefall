@@ -2,6 +2,18 @@
 
 유튜브 URL 로 곡을 추가하고 플레이하는 리듬게임입니다.
 
+## 시스템 요구사항
+
+| 항목 | 최소 사양 | 권장 사양 |
+|---|---|---|
+| OS | Windows 10/11 (64bit) | Windows 10/11 (64bit) |
+| 메모리(RAM) | 8GB | 16GB 이상 |
+| 저장 공간 | 2GB 이상 (곡을 추가할수록 더 필요) | 5GB 이상 |
+| 인터넷 | 설치 시 / 곡 추가 시 필요 | - |
+
+- 곡 추가 시 AI로 음원을 분리하는 과정이 메모리를 많이 써요. 8GB 미만에서는 곡 추가 도중 프로그램이 강제 종료될 수 있어요.
+- 그래픽카드(GPU)는 필요 없어요. CPU만으로 동작합니다.
+
 ## 다운로드
 
 [TUNEFALL_Setup.exe 다운로드](https://github.com/hyunmu-rhythm/tunefall/releases/latest/download/TUNEFALL_Setup.exe)
