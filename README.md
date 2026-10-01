@@ -9,14 +9,8 @@
 ## 설치 방법
 
 `TUNEFALL_Setup.exe` 를 실행하면 자동으로 설치됩니다.
-
-## 최초 실행 안내
-
-처음 실행 시 아래 파일이 자동으로 다운로드됩니다.
-인터넷 연결이 필요하며 시간이 걸릴 수 있습니다.
-
-- ffmpeg (영상 변환 도구, 약 100MB)
-- Spleeter 모델 (채보 생성 AI, 약 500MB)
+설치 파일 안에 채보 생성에 필요한 도구들이 모두 포함되어 있어서,
+설치 중 다운로드/압축 해제에 시간이 좀 걸릴 수 있습니다. (필요 용량: 약 1.5GB)
 
 ## 곡 추가 방법
 
@@ -55,7 +49,7 @@
 - HARD : 고수용
 
 ## 기록 데이터 저장 위치
-C:\Users[사용자이름]\AppData\Roaming\Godot\app_userdata\TUNEFALL
+`C:\Users\[사용자이름]\AppData\Roaming\Godot\app_userdata\TUNEFALL`
 ├── songs\ → 곡 데이터 및 기록
 └── settings.json → 키 설정, 볼륨, 노트 속도
 
