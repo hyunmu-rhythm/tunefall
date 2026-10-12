@@ -1,0 +1,85 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 배경 그라데이션 -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d0b21"/>
+      <stop offset="55%" stop-color="#1a1338"/>
+      <stop offset="100%" stop-color="#2a0f3d"/>
+    </linearGradient>
+
+    <!-- 판정선 글로우 -->
+    <linearGradient id="judgeGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#00f0ff" stop-opacity="0.55"/>
+    </linearGradient>
+
+    <!-- 레인별 노트 색상 -->
+    <linearGradient id="note1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff3d81"/>
+      <stop offset="100%" stop-color="#ff8fb3"/>
+    </linearGradient>
+    <linearGradient id="note2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd23d"/>
+      <stop offset="100%" stop-color="#fff09c"/>
+    </linearGradient>
+    <linearGradient id="note3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3dffb0"/>
+      <stop offset="100%" stop-color="#9cffdd"/>
+    </linearGradient>
+    <linearGradient id="note4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3dc7ff"/>
+      <stop offset="100%" stop-color="#9ce4ff"/>
+    </linearGradient>
+
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <clipPath id="roundedSquare">
+      <rect x="0" y="0" width="512" height="512" rx="104" ry="104"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#roundedSquare)">
+    <!-- 배경 -->
+    <rect width="512" height="512" fill="url(#bg)"/>
+
+    <!-- 은은한 배경 원형 광채 -->
+    <circle cx="256" cy="200" r="260" fill="#7a3dff" opacity="0.12"/>
+
+    <!-- 4개 레인 가이드라인 -->
+    <g opacity="0.18" stroke="#ffffff" stroke-width="2">
+      <line x1="146" y1="70" x2="146" y2="452"/>
+      <line x1="222" y1="70" x2="222" y2="452"/>
+      <line x1="298" y1="70" x2="298" y2="452"/>
+      <line x1="374" y1="70" x2="374" y2="452"/>
+    </g>
+
+    <!-- 판정선 글로우 배경 -->
+    <rect x="70" y="330" width="372" height="122" fill="url(#judgeGlow)"/>
+
+    <!-- 떨어지는 노트들 (리듬감 있게 높이차) -->
+    <rect x="122" y="120" width="48" height="90" rx="14" fill="url(#note1)" filter="url(#softGlow)"/>
+    <rect x="198" y="60"  width="48" height="90" rx="14" fill="url(#note2)" filter="url(#softGlow)"/>
+    <rect x="274" y="150" width="48" height="150" rx="14" fill="url(#note3)" filter="url(#softGlow)"/>
+    <rect x="350" y="95"  width="48" height="90" rx="14" fill="url(#note4)" filter="url(#softGlow)"/>
+
+    <!-- 판정선 (히트 라인) -->
+    <rect x="70" y="366" width="372" height="8" rx="4" fill="#00f0ff" filter="url(#softGlow)"/>
+
+    <!-- 판정선 위 히트 이펙트 -->
+    <circle cx="146" cy="370" r="26" fill="#00f0ff" opacity="0.35" filter="url(#softGlow)"/>
+
+    <!-- 하단 라벨 영역: TUNEFALL 모노그램 (재생 버튼 결합) -->
+    <g transform="translate(256,430)">
+      <path d="M -10 -14 L 14 0 L -10 14 Z" fill="#ffffff" opacity="0.9"/>
+    </g>
+  </g>
+
+  <!-- 테두리 하이라이트 -->
+  <rect x="4" y="4" width="504" height="504" rx="100" ry="100" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="8"/>
+</svg>

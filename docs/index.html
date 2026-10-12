@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TUNEFALL</title>
+<meta name="description" content="좋아하는 곡을 넣으면 채보가 만들어지는 4키 리듬게임, TUNEFALL.">
+<meta property="og:title" content="TUNEFALL">
+<meta property="og:description" content="좋아하는 곡을 넣으면 채보가 만들어지는 4키 리듬게임">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== 색과 글꼴: 게임 아이콘(icon.svg)의 색을 그대로 가져왔어요 ===== */
+  :root {
+    --night: #120d26;      /* 배경 */
+    --dusk: #1d1438;       /* 한 단계 밝은 면 */
+    --line: #2f2456;       /* 구분선 */
+    --ink: #efeaff;        /* 본문 글자 */
+    --mute: #a79fc7;       /* 보조 글자 */
+    --judge: #00f0ff;      /* 판정선 */
+    --lane1: #ff3d81;      /* 1번 레인 */
+    --lane2: #ffd23d;      /* 2번 레인 */
+    --lane3: #3dffb0;      /* 3번 레인 */
+    --lane4: #3dc7ff;      /* 4번 레인 */
+    --display: "Chakra Petch", "IBM Plex Sans KR", sans-serif;
+    --body: "IBM Plex Sans KR", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--night);
+    color: var(--ink);
+    font: 400 17px/1.7 var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--judge); }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--judge);
+    outline-offset: 3px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== 첫 화면 ===== */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(60% 70% at 72% 30%, rgba(122, 61, 255, .22), transparent 70%),
+      var(--night);
+  }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+    gap: 48px;
+    align-items: center;
+    min-height: min(92vh, 860px);
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+  .wordmark {
+    font: 700 clamp(48px, 7.6vw, 100px)/.9 var(--display);
+    letter-spacing: -.02em;
+    margin: 0 0 28px;
+    max-width: 100%;
+    /* 글자 아랫부분이 판정선에 닿은 것처럼 */
+    padding-bottom: 14px;
+    color: var(--ink);
+    border-bottom: 6px solid var(--judge);
+    filter: drop-shadow(0 10px 18px rgba(0, 240, 255, .25));
+    display: inline-block;
+  }
+  .tagline {
+    font: 700 clamp(22px, 2.6vw, 30px)/1.4 var(--body);
+    margin: 0 0 14px;
+    max-width: 22em;
+  }
+  .lede { color: var(--mute); margin: 0 0 32px; max-width: 34em; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font: 700 16px/1 var(--body);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    background: var(--dusk);
+    transition: transform .08s ease, border-color .15s ease;
+  }
+  .btn:hover { border-color: var(--mute); }
+  .btn:active { transform: translateY(2px); }
+  .btn.primary {
+    background: var(--judge);
+    color: #08121a;
+    border-color: var(--judge);
+    box-shadow: 0 0 0 0 rgba(0, 240, 255, .5), 0 8px 30px -10px var(--judge);
+  }
+  .btn.primary:hover { border-color: #fff; }
+  .meta { color: var(--mute); font-size: 14px; line-height: 1.8; margin: 0; }
+  .meta strong { color: var(--ink); font-weight: 500; }
+
+  /* ===== 직접 쳐 보는 레인 ===== */
+  .stage { justify-self: center; width: 100%; max-width: 380px; }
+  .stage canvas {
+    display: block; width: 100%; aspect-ratio: 4 / 5.4;
+    border-radius: 14px 14px 0 0;
+    background: #0b0819;
+    border: 1px solid var(--line);
+    border-bottom: 0;
+    touch-action: none;
+  }
+  .keys {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line); border-radius: 0 0 14px 14px;
+    overflow: hidden;
+  }
+  .keys button {
+    appearance: none; border: 0; border-right: 1px solid var(--line);
+    background: var(--dusk); color: var(--ink);
+    font: 700 18px/1 var(--display);
+    padding: 14px 0; cursor: pointer;
+    border-top: 3px solid var(--c);
+  }
+  .keys button:last-child { border-right: 0; }
+  .keys button.down { background: color-mix(in srgb, var(--c) 30%, var(--dusk)); }
+  .stage-hint { text-align: center; color: var(--mute); font-size: 14px; margin: 12px 0 0; }
+
+  /* ===== 본문 구역 ===== */
+  section.block { padding: 88px 0; border-bottom: 1px solid var(--line); }
+  .block h2 {
+    font: 700 clamp(28px, 3.4vw, 40px)/1.2 var(--display);
+    margin: 0 0 12px;
+    letter-spacing: -.01em;
+  }
+  .block .intro { color: var(--mute); margin: 0 0 40px; max-width: 36em; }
+
+  /* 특징: 네 레인 색으로 하나씩 */
+  .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 56px; margin: 0; padding: 0; list-style: none; }
+  .features li { position: relative; padding-left: 30px; }
+  .features li::before {
+    content: ""; position: absolute; left: 0; top: 5px;
+    width: 12px; height: 26px; border-radius: 4px;
+    background: var(--c);
+    box-shadow: 0 0 16px var(--c);
+  }
+  .features h3 { font: 700 20px/1.4 var(--body); margin: 0 0 6px; }
+  .features p { margin: 0; color: var(--mute); max-width: 30em; }
+
+  /* 시작하기: 실제 순서가 있는 단계 */
+  .steps { counter-reset: step; list-style: none; margin: 0; padding: 0; max-width: 760px; }
+  .steps li {
+    counter-increment: step;
+    display: grid; grid-template-columns: 56px 1fr; gap: 0 20px;
+    padding: 24px 0; border-top: 1px solid var(--line);
+  }
+  .steps li:first-child { border-top: 0; padding-top: 0; }
+  .steps li::before {
+    content: counter(step);
+    font: 700 34px/1 var(--display); color: var(--judge);
+    grid-row: span 2;
+  }
+  .steps h3 { margin: 0 0 4px; font: 700 19px/1.4 var(--body); }
+  .steps p { margin: 0; color: var(--mute); }
+  kbd {
+    font: 700 13px/1 var(--display);
+    padding: 3px 7px; border-radius: 5px;
+    border: 1px solid var(--line); border-bottom-width: 3px;
+    background: var(--dusk); color: var(--ink);
+  }
+
+  /* 패치 노트 */
+  #patchnotes .version { margin: 0 0 28px; max-width: 760px; }
+  .version-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .version-head h3 { font: 700 26px/1.2 var(--display); margin: 0; }
+  .version-head time { color: var(--mute); font-size: 14px; }
+  .version.latest .version-head h3 { color: var(--lane2); }
+  .notes { margin: 10px 0 0; padding: 0; list-style: none; }
+  .notes > li { margin: 14px 0 0; font-weight: 700; }
+  .notes ul { margin: 6px 0 0; padding-left: 20px; font-weight: 400; color: var(--mute); }
+  .notes ul li { margin: 2px 0; }
+  details.older { max-width: 760px; border-top: 1px solid var(--line); }
+  details.older > summary {
+    cursor: pointer; padding: 18px 0; color: var(--mute); font-weight: 500;
+    list-style: none;
+  }
+  details.older > summary::-webkit-details-marker { display: none; }
+  details.older > summary::before { content: "+ "; color: var(--judge); }
+  details.older[open] > summary::before { content: "− "; }
+  .notice { color: var(--mute); }
+
+  /* 자주 묻는 질문 */
+  .faq { max-width: 760px; }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq details:last-child { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    cursor: pointer; padding: 20px 36px 20px 0; position: relative;
+    font-weight: 700; list-style: none;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+"; position: absolute; right: 4px; top: 16px;
+    font: 500 24px/1 var(--display); color: var(--judge);
+  }
+  .faq details[open] summary::after { content: "−"; }
+  .faq .answer { padding: 0 0 22px; color: var(--mute); }
+  .faq .answer p { margin: 0 0 8px; }
+  code {
+    font-family: Consolas, "D2Coding", monospace; font-size: 14px;
+    background: var(--dusk); padding: 2px 6px; border-radius: 4px; color: var(--ink);
+    word-break: break-all;
+  }
+
+  /* 사양 */
+  .specs { display: grid; grid-template-columns: max-content 1fr; gap: 10px 32px; margin: 0; max-width: 620px; }
+  .specs dt { color: var(--mute); }
+  .specs dd { margin: 0; }
+
+  footer { padding: 48px 0 64px; color: var(--mute); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; justify-content: space-between; }
+  footer .mark { font: 700 20px/1 var(--display); color: var(--ink); }
+  footer nav { display: flex; gap: 24px; }
+
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; min-height: 0; padding-top: 40px; gap: 40px; }
+    .stage { max-width: 340px; }
+    .features { grid-template-columns: 1fr; gap: 28px; }
+    section.block { padding: 64px 0; }
+  }
+  @media (max-width: 480px) {
+    .wrap { padding: 0 16px; }
+    body { font-size: 16px; }
+    .btn { width: 100%; justify-content: center; }
+    .steps li { grid-template-columns: 40px 1fr; gap: 0 12px; }
+    .steps li::before { font-size: 26px; }
+    .specs { grid-template-columns: 1fr; gap: 2px; }
+    .specs dd { margin-bottom: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <h1 class="wordmark">TUNEFALL</h1>
+      <p class="tagline">좋아하는 곡을 넣으면 채보가 만들어지는 4키 리듬게임</p>
+      <p class="lede">곡 링크를 붙여넣으면 박자와 악기를 분석해서 EASY, NORMAL, HARD 세 가지 채보를 자동으로 만들어 줘요. 같은 곡은 언제나 같은 채보가 나와서 기록 경쟁도 할 수 있어요.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/hyunmu-rhythm/tunefall/releases/latest/download/TUNEFALL_Setup.exe">Windows용 다운로드</a>
+        <a class="btn" href="https://discord.gg/SmNnxrg6sC" target="_blank" rel="noopener">Discord 참여하기</a>
+      </div>
+      <p class="meta">
+        <span id="latest-version">최신 버전을 확인하는 중이에요</span><br>
+        Windows 10, 11 (64비트) 전용 무료 게임
+      </p>
+    </div>
+
+    <div class="stage">
+      <canvas id="highway" aria-label="노트가 떨어지는 4키 레인. D, F, J, K 키나 화면을 눌러 직접 쳐 볼 수 있어요." role="img"></canvas>
+      <div class="keys" id="keys">
+        <button type="button" style="--c: var(--lane1)" data-lane="0" aria-label="1번 레인 (D)">D</button>
+        <button type="button" style="--c: var(--lane2)" data-lane="1" aria-label="2번 레인 (F)">F</button>
+        <button type="button" style="--c: var(--lane3)" data-lane="2" aria-label="3번 레인 (J)">J</button>
+        <button type="button" style="--c: var(--lane4)" data-lane="3" aria-label="4번 레인 (K)">K</button>
+      </div>
+      <p class="stage-hint" id="stage-hint">D F J K 를 눌러 직접 쳐 보세요</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="block" id="features">
+    <div class="wrap">
+      <h2>이런 게임이에요</h2>
+      <p class="intro">DJMAX처럼 위에서 떨어지는 노트를 판정선에 맞춰 치는 키보드 리듬게임이에요.</p>
+      <ul class="features">
+        <li style="--c: var(--lane1)">
+          <h3>곡 링크로 채보 자동 생성</h3>
+          <p>곡을 악기별로 나눠 분석한 뒤, 곡의 빠르기와 밀도에 맞춰 1~30 난이도의 채보를 만들어요.</p>
+        </li>
+        <li style="--c: var(--lane2)">
+          <h3>손맛 나는 판정</h3>
+          <p>Perfect, Great, Good, Miss 판정과 FAST / LATE 표시, 키를 누를 때 켜지는 키빔과 판정 이펙트가 있어요.</p>
+        </li>
+        <li style="--c: var(--lane3)">
+          <h3>내 환경에 맞추는 싱크</h3>
+          <p>비프음에 맞춰 떨어지는 노트로 소리 지연과 판정선 위치를 직접 맞출 수 있어요.</p>
+        </li>
+        <li style="--c: var(--lane4)">
+          <h3>만든 곡은 친구와 공유</h3>
+          <p>채보가 만들어진 곡을 zip 파일로 내보내서 친구에게 보낼 수 있어요. 기록은 빼고 보내져요.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="start">
+    <div class="wrap">
+      <h2>시작하기</h2>
+      <p class="intro">설치부터 첫 플레이까지 순서대로 따라 하면 돼요.</p>
+      <ol class="steps">
+        <li>
+          <h3>설치하기</h3>
+          <p>내려받은 <code>TUNEFALL_Setup.exe</code>를 실행하세요. 관리자 권한 없이 설치되고, 바탕화면에 바로가기가 생겨요.</p>
+        </li>
+        <li>
+          <h3>싱크 맞추기</h3>
+          <p>설정에서 싱크 조절 화면을 열고, 비프음에 맞춰 <kbd>Space</kbd>를 눌러 보세요. 자동 적용을 누르면 내 PC에 맞는 값이 저장돼요.</p>
+        </li>
+        <li>
+          <h3>곡 추가하기</h3>
+          <p>곡 선택 화면에서 곡 링크를 붙여넣고 ADD를 누르세요. 곡 길이에 따라 몇 분 정도 걸리고, 인터넷 연결이 필요해요.</p>
+        </li>
+        <li>
+          <h3>플레이하기</h3>
+          <p><kbd>D</kbd> <kbd>F</kbd> <kbd>J</kbd> <kbd>K</kbd>로 노트를 치고, <kbd>ESC</kbd>로 일시정지해요. 게임 중에 <kbd>Z</kbd> <kbd>C</kbd>로 노트 속도를 바꾸고 <kbd>X</kbd>로 기본 속도로 돌아가요. 키는 설정에서 바꿀 수 있어요.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="patchnotes">
+    <div class="wrap">
+      <h2>패치 노트</h2>
+      <p class="intro">업데이트가 나오면 게임을 켤 때 알려 줘요. 추가한 곡과 기록은 업데이트해도 그대로 남아요.</p>
+      <div id="patch-list"><p class="notice">패치 노트를 불러오는 중이에요.</p></div>
+    </div>
+  </section>
+
+  <section class="block" id="faq">
+    <div class="wrap">
+      <h2>자주 묻는 질문</h2>
+      <p class="intro">여기서 해결되지 않으면 Discord에 남겨 주세요.</p>
+      <div class="faq">
+        <details>
+          <summary>설치할 때 “Windows의 PC 보호” 창이 떠요</summary>
+          <div class="answer">
+            <p>개인이 만든 게임이라 아직 디지털 서명이 없어서 나오는 안내예요. 창에서 <strong>추가 정보</strong>를 누른 뒤 <strong>실행</strong>을 누르면 설치할 수 있어요.</p>
+          </div>
+        </details>
+        <details>
+          <summary>“애플리케이션 제어 정책에서 이 파일을 차단했습니다”가 떠요</summary>
+          <div class="answer">
+            <p>Windows 11의 스마트 앱 컨트롤이 켜진 PC에서 생기는 문제예요. 지금은 해결 방법을 준비하고 있으니 Discord에 알려 주세요.</p>
+          </div>
+        </details>
+        <details>
+          <summary>곡 추가가 실패해요</summary>
+          <div class="answer">
+            <p>인터넷 연결을 확인한 뒤 다시 시도해 보세요. 그래도 안 되면 오류 창의 <strong>자세히 보기</strong> 내용을 Discord에 보내 주세요. 오류는 개발자에게도 자동으로 전달돼요.</p>
+          </div>
+        </details>
+        <details>
+          <summary>판정이 늦거나 빠르게 느껴져요</summary>
+          <div class="answer">
+            <p>PC와 스피커마다 소리가 늦게 나오는 정도가 달라요. 설정의 싱크 조절 화면에서 한 번 맞추면 판정에 바로 반영돼요. 판정 아래에 FAST가 자주 뜨면 빨리, LATE가 자주 뜨면 늦게 치고 있는 거예요.</p>
+          </div>
+        </details>
+        <details>
+          <summary>곡과 기록은 어디에 저장되나요?</summary>
+          <div class="answer">
+            <p>탐색기 주소창에 아래 경로를 붙여넣으면 열려요. 다른 PC로 옮기고 싶을 때 이 폴더를 복사하면 돼요.</p>
+            <p><code>%APPDATA%\Godot\app_userdata\TUNEFALL</code></p>
+          </div>
+        </details>
+        <details>
+          <summary>게임을 지우고 싶어요</summary>
+          <div class="answer">
+            <p>Windows <strong>설정 → 앱 → 설치된 앱</strong>에서 TUNEFALL을 찾아 제거하세요. 제거할 때 게임만 지울지, 곡 데이터까지 지울지, 설정까지 모두 지울지 고를 수 있어요.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="specs">
+    <div class="wrap">
+      <h2>권장 사양</h2>
+      <p class="intro">그래픽카드는 필요 없지만, 채보를 만들 때 메모리를 많이 써요.</p>
+      <dl class="specs">
+        <dt>운영체제</dt><dd>Windows 10, 11 (64비트)</dd>
+        <dt>메모리</dt><dd>8GB 이상 (16GB 권장)</dd>
+        <dt>저장 공간</dt><dd>2GB 이상</dd>
+        <dt>인터넷</dt><dd>설치, 업데이트, 곡 추가할 때 필요</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mark">TUNEFALL</span>
+    <nav aria-label="바깥 링크">
+      <a href="https://discord.gg/SmNnxrg6sC" target="_blank" rel="noopener">Discord</a>
+      <a href="https://github.com/hyunmu-rhythm/tunefall" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/hyunmu-rhythm/tunefall/releases" target="_blank" rel="noopener">모든 버전</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   1) 최신 버전과 패치 노트: GitHub 저장소의 파일을 그대로 읽어 와요.
+      배포할 때 version.txt, 패치노트.txt 만 고치면 홈페이지도 바뀌어요.
+   ===================================================================== */
+const RAW = "https://raw.githubusercontent.com/hyunmu-rhythm/tunefall/main/";
+const PATCH_URL = RAW + encodeURIComponent("패치노트.txt");
+const REPO_PATCH_PAGE = "https://github.com/hyunmu-rhythm/tunefall/blob/main/" + encodeURIComponent("패치노트.txt");
+
+fetch(RAW + "version.txt", { cache: "no-store" })
+  .then(r => { if (!r.ok) throw 0; return r.text(); })
+  .then(v => { document.getElementById("latest-version").innerHTML = "최신 버전 <strong>v" + escapeHtml(v.trim()) + "</strong>"; })
+  .catch(() => { document.getElementById("latest-version").textContent = "최신 버전은 다운로드 버튼으로 받을 수 있어요"; });
+
+fetch(PATCH_URL, { cache: "no-store" })
+  .then(r => { if (!r.ok) throw 0; return r.text(); })
+  .then(renderPatchNotes)
+  .catch(() => {
+    document.getElementById("patch-list").innerHTML =
+      '<p class="notice">패치 노트를 불러오지 못했어요. <a href="' + REPO_PATCH_PAGE + '" target="_blank" rel="noopener">GitHub에서 보기</a></p>';
+  });
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// 패치노트.txt 양식:  [ v1.2.0 ] 2026-10-11 /   - 분류 /     · 항목 / ==== 구분선
+function parsePatchNotes(text) {
+  const blocks = text.replace(/\r/g, "").split(/\n=+\s*\n/);
+  const versions = [];
+  for (const block of blocks) {
+    const lines = block.split("\n").filter(l => l.trim() !== "");
+    if (!lines.length) continue;
+    const head = lines[0].match(/\[\s*v?([\w.]+)\s*\]\s*(\S*)/);
+    if (!head) continue;
+    const v = { version: head[1], date: head[2] || "", groups: [] };
+    let group = null, lastItem = null;
+    for (const raw of lines.slice(1)) {
+      const t = raw.trim();
+      if (t.startsWith("·")) {                       // 세부 항목
+        if (!group) { group = { title: "", items: [] }; v.groups.push(group); }
+        lastItem = t.replace(/^·\s*/, "");
+        group.items.push(lastItem);
+      } else if (t.startsWith("-")) {                // 분류
+        group = { title: t.replace(/^-\s*/, ""), items: [] };
+        v.groups.push(group); lastItem = null;
+      } else if (group && group.items.length) {      // 앞 항목에 이어지는 줄
+        group.items[group.items.length - 1] += " " + t;
+      } else if (group) {
+        group.title += " " + t;
+      }
+    }
+    versions.push(v);
+  }
+  return versions;
+}
+
+function versionHtml(v, latest) {
+  let html = '<article class="version' + (latest ? " latest" : "") + '">' +
+    '<div class="version-head"><h3>v' + escapeHtml(v.version) + "</h3>" +
+    (v.date ? '<time datetime="' + escapeHtml(v.date) + '">' + escapeHtml(v.date) + "</time>" : "") +
+    '</div><ul class="notes">';
+  for (const g of v.groups) {
+    html += "<li>" + escapeHtml(g.title);
+    if (g.items.length) html += "<ul>" + g.items.map(i => "<li>" + escapeHtml(i) + "</li>").join("") + "</ul>";
+    html += "</li>";
+  }
+  return html + "</ul></article>";
+}
+
+function renderPatchNotes(text) {
+  const list = parsePatchNotes(text);
+  const box = document.getElementById("patch-list");
+  if (!list.length) { box.innerHTML = '<p class="notice">아직 패치 노트가 없어요.</p>'; return; }
+  const SHOW = 2;  // 처음부터 펼쳐 둘 버전 수
+  let html = list.slice(0, SHOW).map((v, i) => versionHtml(v, i === 0)).join("");
+  if (list.length > SHOW) {
+    html += '<details class="older"><summary>이전 버전 ' + (list.length - SHOW) + "개 더 보기</summary>" +
+      list.slice(SHOW).map(v => versionHtml(v, false)).join("") + "</details>";
+  }
+  box.innerHTML = html;
+}
+
+/* =====================================================================
+   2) 첫 화면의 레인: 가만히 두면 자동으로 치고, 키를 누르면 직접 쳐요.
+      판정 기준은 게임과 같아요 (Perfect 30ms / Great 60ms / Good 90ms).
+   ===================================================================== */
+(function () {
+  const canvas = document.getElementById("highway");
+  const ctx = canvas.getContext("2d");
+  const keyButtons = [...document.querySelectorAll("#keys button")];
+  const css = getComputedStyle(document.documentElement);
+  const LANE_COLORS = ["--lane1", "--lane2", "--lane3", "--lane4"].map(n => css.getPropertyValue(n).trim());
+  const JUDGE_COLOR = css.getPropertyValue("--judge").trim();
+  const JUDGE = [["Perfect", 0.030, "#ffe45c"], ["Great", 0.060, "#5cff8a"], ["Good", 0.090, "#5cb4ff"]];
+  const KEY_CODES = { KeyD: 0, KeyF: 1, KeyJ: 2, KeyK: 3 };
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const BPM = 132, STEP = 60 / BPM / 2;  // 8분음표 간격
+  // 반복되는 패턴 (한 칸 = 8분음표, 숫자 = 레인, 빈 배열 = 쉼)
+  const PATTERN = [[0], [1], [2], [3], [2], [1], [0, 3], [],
+                   [1], [2], [1], [2], [0], [3], [1, 2], [],
+                   [0], [0], [3], [3], [1], [2], [0], [3],
+                   [1], [], [2], [], [0, 2], [], [1, 3], []];
+  const FALL_TIME = 0.85;  // 노트가 위에서 판정선까지 내려오는 시간(초)
+
+  let W = 0, H = 0, JUDGE_Y = 0, dpr = 1;
+  let notes = [], nextStep = 0, startTime = 0;
+  let lastUserInput = -Infinity, combo = 0;
+  let judgeText = null;  // { text, color, at }
+  const beams = [0, 0, 0, 0];       // 키빔 밝기
+  const held = [false, false, false, false];
+  const flashes = [];              // 판정 이펙트
+  const sparks = [];
+
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    JUDGE_Y = H - 46;
+    if (reduceMotion) drawStatic();
+  }
+
+  const now = () => performance.now() / 1000;
+  const laneW = () => W / 4;
+  const autoMode = t => t - lastUserInput > 2.5;
+
+  function spawn(t) {
+    // 앞으로 FALL_TIME 안에 판정선에 닿을 노트를 미리 만들어 둬요
+    while (startTime + nextStep * STEP < t + FALL_TIME + 0.1) {
+      const hitAt = startTime + nextStep * STEP;
+      for (const lane of PATTERN[nextStep % PATTERN.length]) notes.push({ lane, at: hitAt, done: false });
+      nextStep++;
+    }
+  }
+
+  function hit(lane, judge, t) {
+    const [name, , color] = judge;
+    combo++;
+    judgeText = { text: name, color, at: t };
+    flashes.push({ lane, color, at: t, power: name === "Perfect" ? 1 : name === "Great" ? .75 : .55 });
+    for (let i = 0; i < 9; i++) {
+      sparks.push({
+        x: (lane + .2 + Math.random() * .6) * laneW(), y: JUDGE_Y,
+        vx: (Math.random() - .5) * 140, vy: -(220 + Math.random() * 300),
+        at: t, color
+      });
+    }
+  }
+
+  function press(lane) {
+    const t = now();
+    lastUserInput = t;
+    held[lane] = true; beams[lane] = 1;
+    keyButtons[lane].classList.add("down");
+    // 이 레인에서 판정 범위 안에 있는 가장 이른 노트를 찾아요
+    let target = null;
+    for (const n of notes) {
+      if (n.done || n.lane !== lane) continue;
+      if (Math.abs(t - n.at) <= 0.090 && (!target || n.at < target.at)) target = n;
+    }
+    if (!target) return;  // 범위 밖이면 키빔만 켜고 무시 (게임과 같아요)
+    target.done = true;
+    const d = Math.abs(t - target.at);
+    hit(lane, JUDGE.find(j => d <= j[1]), t);
+  }
+  function release(lane) {
+    held[lane] = false;
+    keyButtons[lane].classList.remove("down");
+  }
+
+  function update(t) {
+    spawn(t);
+    const auto = autoMode(t);
+    for (const n of notes) {
+      if (n.done) continue;
+      if (auto && t >= n.at) { n.done = true; beams[n.lane] = 1; hit(n.lane, JUDGE[0], t); }
+      else if (!auto && t - n.at > 0.090) {    // 놓친 노트
+        n.done = true; combo = 0;
+        judgeText = { text: "Miss", color: "#ff5470", at: t };
+      }
+    }
+    notes = notes.filter(n => !n.done || t - n.at < 0.2);
+    for (let i = 0; i < 4; i++) if (!held[i]) beams[i] = Math.max(0, beams[i] - 0.09);
+  }
+
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+
+  function draw(t) {
+    const lw = laneW();
+    ctx.clearRect(0, 0, W, H);
+    // 레인 구분선
+    ctx.strokeStyle = "rgba(255,255,255,.07)"; ctx.lineWidth = 1;
+    for (let i = 1; i < 4; i++) { ctx.beginPath(); ctx.moveTo(i * lw + .5, 0); ctx.lineTo(i * lw + .5, H); ctx.stroke(); }
+    // 키빔
+    for (let i = 0; i < 4; i++) {
+      if (beams[i] <= 0) continue;
+      const g = ctx.createLinearGradient(0, JUDGE_Y - H * .55, 0, JUDGE_Y);
+      g.addColorStop(0, "rgba(120,200,255,0)");
+      g.addColorStop(1, "rgba(120,200,255," + (.35 * beams[i]) + ")");
+      ctx.fillStyle = g; ctx.fillRect(i * lw, JUDGE_Y - H * .55, lw, H * .55);
+    }
+    // 노트
+    const speed = (JUDGE_Y + 20) / FALL_TIME;
+    for (const n of notes) {
+      if (n.done) continue;
+      const y = JUDGE_Y - (n.at - t) * speed;
+      if (y < -20) continue;
+      ctx.fillStyle = LANE_COLORS[n.lane];
+      ctx.shadowColor = LANE_COLORS[n.lane]; ctx.shadowBlur = 14;
+      roundRect(n.lane * lw + lw * .14, y - 9, lw * .72, 18, 6); ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    // 판정선
+    ctx.fillStyle = JUDGE_COLOR; ctx.shadowColor = JUDGE_COLOR; ctx.shadowBlur = 18;
+    ctx.fillRect(0, JUDGE_Y - 3, W, 6); ctx.shadowBlur = 0;
+    // 판정 이펙트: 위로 솟는 빛 + 얇은 빛줄기
+    for (let i = flashes.length - 1; i >= 0; i--) {
+      const f = flashes[i], k = (t - f.at) / 0.18;
+      if (k >= 1) { flashes.splice(i, 1); continue; }
+      const ease = 1 - Math.pow(1 - Math.min(1, k / .6), 3);
+      const h = 150 * f.power * (.3 + .7 * ease);
+      const g = ctx.createLinearGradient(0, JUDGE_Y - h, 0, JUDGE_Y);
+      g.addColorStop(0, "rgba(255,255,255,0)");
+      g.addColorStop(1, f.color);
+      ctx.globalAlpha = .75 * f.power * (1 - k);
+      ctx.fillStyle = g; ctx.fillRect(f.lane * lw + lw * .075, JUDGE_Y - h, lw * .85, h);
+      ctx.globalAlpha = 1 - k;
+      ctx.fillStyle = "#fff";
+      const lineW = lw * (.9 + .35 * ease);
+      ctx.fillRect(f.lane * lw + (lw - lineW) / 2, JUDGE_Y - 2 * (1 - k * .6), lineW, 4 * (1 - k * .6));
+      ctx.globalAlpha = 1;
+    }
+    // 불꽃
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i], a = t - s.at;
+      if (a > .35) { sparks.splice(i, 1); continue; }
+      const x = s.x + s.vx * a, y = s.y + s.vy * a + 700 * a * a;
+      ctx.globalAlpha = 1 - a / .35; ctx.fillStyle = s.color;
+      ctx.fillRect(x - 1.5, y - 1.5, 3, 3);
+    }
+    ctx.globalAlpha = 1;
+    // 판정 글자와 콤보
+    if (judgeText && t - judgeText.at < .5) {
+      const k = Math.min(1, (t - judgeText.at) / .1);
+      const size = 26 * (1.4 - .4 * k);
+      ctx.textAlign = "center";
+      ctx.font = "700 " + size + "px 'Chakra Petch', sans-serif";
+      ctx.fillStyle = judgeText.color;
+      ctx.fillText(judgeText.text, W / 2, H * .38);
+      if (combo > 1) {
+        ctx.font = "700 15px 'Chakra Petch', sans-serif";
+        ctx.fillStyle = "rgba(239,234,255,.8)";
+        ctx.fillText(combo + " COMBO", W / 2, H * .38 + 26);
+      }
+    }
+    if (autoMode(t)) {
+      ctx.textAlign = "right"; ctx.font = "500 12px 'Chakra Petch', sans-serif";
+      ctx.fillStyle = "rgba(167,159,199,.7)"; ctx.fillText("AUTO", W - 10, 20);
+    }
+  }
+
+  function loop() {
+    const t = now();
+    update(t); draw(t);
+    if (running) requestAnimationFrame(loop);
+  }
+
+  // 모션 줄이기를 켠 사람에게는 멈춘 화면 한 장만 보여 줘요
+  function drawStatic() {
+    const t = 10; startTime = 0; nextStep = 0; notes = [];
+    spawn(t - FALL_TIME);
+    draw(t - FALL_TIME * .55);
+  }
+
+  let running = false;
+  function start() {
+    if (running || reduceMotion) return;
+    running = true; startTime = now() + 0.6; nextStep = 0; notes = [];
+    requestAnimationFrame(loop);
+  }
+  function stop() { running = false; }
+
+  resize();
+  addEventListener("resize", resize);
+  if (reduceMotion) {
+    document.getElementById("stage-hint").textContent = "모션 줄이기 설정이 켜져 있어 움직이지 않아요";
+    return;
+  }
+  // 화면에 보일 때만 움직여요 (배터리 아끼기)
+  new IntersectionObserver(es => es[0].isIntersecting ? start() : stop()).observe(canvas);
+
+  addEventListener("keydown", e => {
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+    if (e.code in KEY_CODES) press(KEY_CODES[e.code]);
+  });
+  addEventListener("keyup", e => { if (e.code in KEY_CODES) release(KEY_CODES[e.code]); });
+
+  // 마우스, 터치: 아래 키 버튼이나 레인을 직접 눌러도 돼요
+  keyButtons.forEach((b, i) => {
+    b.addEventListener("pointerdown", e => { e.preventDefault(); press(i); });
+    b.addEventListener("pointerup", () => release(i));
+    b.addEventListener("pointerleave", () => release(i));
+  });
+  canvas.addEventListener("pointerdown", e => {
+    const r = canvas.getBoundingClientRect();
+    const lane = Math.min(3, Math.floor((e.clientX - r.left) / (r.width / 4)));
+    press(lane); setTimeout(() => release(lane), 90);
+  });
+  if (matchMedia("(pointer: coarse)").matches) {
+    document.getElementById("stage-hint").textContent = "레인이나 아래 버튼을 눌러 직접 쳐 보세요";
+  }
+})();
+</script>
+</body>
+</html>
