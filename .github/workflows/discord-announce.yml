@@ -1,0 +1,24 @@
+# 새 버전을 배포하면(version.txt 가 바뀌면) 디스코드 패치노트 채널에 자동으로 공지해요.
+# 공지가 실패했거나 다시 보내고 싶으면: GitHub 저장소 > Actions > "Discord 업데이트 공지" > Run workflow
+name: Discord 업데이트 공지
+
+on:
+  push:
+    branches: [main]
+    paths: [version.txt]
+  workflow_dispatch:
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 디스코드에 공지 보내기
+        env:
+          # 저장소 Settings > Secrets and variables > Actions 에 넣어둔 값을 써요 (코드에는 적지 않아요)
+          DISCORD_ANNOUNCE_WEBHOOK: ${{ secrets.DISCORD_ANNOUNCE_WEBHOOK }}
+          DISCORD_ANNOUNCE_ROLE_ID: ${{ secrets.DISCORD_ANNOUNCE_ROLE_ID }}
+        run: python .github/scripts/announce.py
