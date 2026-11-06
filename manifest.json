@@ -4,8 +4,8 @@
                   {
                       "where":  "install",
                       "path":  "TUNEFALL.exe",
-                      "size":  100832976,
-                      "sha256":  "b7382bc89ec3e83083ea0a09903f311660c5c2beb48f8df77b4d90a0e3b3f64b",
+                      "size":  104704720,
+                      "sha256":  "d7855a256961f25ae122efc4e14c04d8c3894928474b5fd11f8485b1f1e094ec",
                       "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/install__TUNEFALL.exe"
                   },
                   {
