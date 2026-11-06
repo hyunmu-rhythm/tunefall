@@ -1,0 +1,96 @@
+{
+    "version":  "1.4.0",
+    "files":  [
+                  {
+                      "where":  "install",
+                      "path":  "TUNEFALL.exe",
+                      "size":  100832976,
+                      "sha256":  "b7382bc89ec3e83083ea0a09903f311660c5c2beb48f8df77b4d90a0e3b3f64b",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/install__TUNEFALL.exe"
+                  },
+                  {
+                      "where":  "install",
+                      "path":  "uninstall.exe",
+                      "size":  11751065,
+                      "sha256":  "b7da31b0c608e60c00709cc0c76b7e5447de7fe2a298b09d7e30caac8aa34f95",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/install__uninstall.exe"
+                  },
+                  {
+                      "where":  "install",
+                      "path":  "TUNEFALL_Launcher.exe",
+                      "size":  104612624,
+                      "sha256":  "a058166108563d7cc70a36c35f76c3b8cf0e176a9605d63a3b44886c73bdb21b",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/install__TUNEFALL_Launcher.exe"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "generator.exe",
+                      "size":  557569948,
+                      "sha256":  "731d41398a4110c4728acc59f0f70911645e19819eda8fa7ecc9802bb86eef03",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__generator.exe"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "convert_video.exe",
+                      "size":  6841968,
+                      "sha256":  "0e786fc10c4e447dff861f2c47cccd683d80446d645d17959d3ffb85878f59dc",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__convert_video.exe"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "ffmpeg.exe",
+                      "size":  144506368,
+                      "sha256":  "b6e37c0e4bf1c18bd019e8926c5809ecf734249bd48c227efacf019bd6528b92",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__ffmpeg.exe"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "ffprobe.exe",
+                      "size":  144296448,
+                      "sha256":  "fa86ff8d675b24b31979d65da1f569a9f0418e69db184ec6688f3c6d7f9ffa14",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__ffprobe.exe"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "deno.exe",
+                      "size":  97316640,
+                      "sha256":  "2ff9493dfa356be2975f477025ea770088e9e9cb2c83d983236d13561b96b7a6",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__deno.exe"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "pretrained_models/4stems/.probe",
+                      "size":  2,
+                      "sha256":  "565339bc4d33d72817b583024112eb7f5cdf3e5eef0252d6ec1b9c9a94e12bb3",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__pretrained_models__4stems__.probe"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "pretrained_models/4stems/checkpoint",
+                      "size":  67,
+                      "sha256":  "011c96b970c1f56137037924fe1a0f0851369b0ee6692e120aea798615326f48",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__pretrained_models__4stems__checkpoint"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "pretrained_models/4stems/model.data-00000-of-00001",
+                      "size":  157228152,
+                      "sha256":  "3823e0ef50835cca3907c386dc9667a6a9af77b40a20c3ab845a8d6c9592255d",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__pretrained_models__4stems__model.data-00000-of-00001"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "pretrained_models/4stems/model.index",
+                      "size":  10368,
+                      "sha256":  "99ea41b3ef9bfbc6a34520409427af5ba7a883173e57ea25d6c487584b891b18",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__pretrained_models__4stems__model.index"
+                  },
+                  {
+                      "where":  "tools",
+                      "path":  "pretrained_models/4stems/model.meta",
+                      "size":  1588447,
+                      "sha256":  "f2c2843e3c8c84c737d0ba642fef798d24056f8dbb0b2e2d58a19de55b20034e",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__pretrained_models__4stems__model.meta"
+                  }
+              ]
+}
