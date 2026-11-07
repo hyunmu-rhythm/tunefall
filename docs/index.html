@@ -43,6 +43,29 @@
   }
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
+  /* ===== 위쪽 메뉴 (스크롤해도 따라와요) ===== */
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(18, 13, 38, .84);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topnav .wrap { display: flex; align-items: center; gap: 28px; height: 60px; }
+  .topnav .brand { font: 700 20px/1 var(--display); color: var(--ink); text-decoration: none; letter-spacing: .02em; }
+  .topnav ul { display: flex; gap: 2px; list-style: none; margin: 0; padding: 0; flex: 1; min-width: 0; }
+  .topnav ul a {
+    display: block; padding: 9px 12px; border-radius: 8px; white-space: nowrap;
+    color: var(--mute); text-decoration: none; font: 500 15px/1 var(--body);
+  }
+  .topnav ul a:hover { color: var(--ink); background: var(--dusk); }
+  .topnav ul a[aria-current="true"] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--judge); border-radius: 8px 8px 0 0; }
+  .topnav .nav-dl {
+    padding: 10px 16px; border-radius: 8px; white-space: nowrap;
+    background: var(--judge); color: #08121a; text-decoration: none; font: 700 14px/1 var(--body);
+  }
+  .topnav .nav-dl:hover { box-shadow: 0 0 0 2px #fff inset; }
+  #top, section.block { scroll-margin-top: 60px; }
+
   /* ===== 첫 화면 ===== */
   .hero {
     position: relative;
@@ -182,6 +205,17 @@
   .notes > li { margin: 14px 0 0; font-weight: 700; }
   .notes ul { margin: 6px 0 0; padding-left: 20px; font-weight: 400; color: var(--mute); }
   .notes ul li { margin: 2px 0; }
+  .tabs {
+    display: inline-flex; gap: 4px; padding: 4px; margin: 0 0 36px;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--dusk);
+  }
+  .tabs button {
+    appearance: none; border: 0; background: transparent; cursor: pointer;
+    color: var(--mute); font: 700 15px/1 var(--body);
+    padding: 11px 20px; border-radius: 8px;
+  }
+  .tabs button:hover { color: var(--ink); }
+  .tabs button[aria-selected="true"] { background: var(--night); color: var(--ink); box-shadow: inset 0 -2px 0 var(--judge); }
   details.older { max-width: 760px; border-top: 1px solid var(--line); }
   details.older > summary {
     cursor: pointer; padding: 18px 0; color: var(--mute); font-weight: 500;
@@ -225,6 +259,9 @@
   footer nav { display: flex; gap: 24px; }
 
   @media (max-width: 860px) {
+    .topnav .wrap { gap: 12px; }
+    .topnav ul { overflow-x: auto; scrollbar-width: none; }
+    .topnav ul::-webkit-scrollbar { display: none; }
     .hero .wrap { grid-template-columns: 1fr; min-height: 0; padding-top: 40px; gap: 40px; }
     .stage { max-width: 340px; }
     .features { grid-template-columns: 1fr; gap: 28px; }
@@ -232,6 +269,10 @@
   }
   @media (max-width: 480px) {
     .wrap { padding: 0 16px; }
+    .topnav .wrap { height: auto; flex-wrap: wrap; row-gap: 2px; padding-top: 10px; padding-bottom: 4px; justify-content: space-between; }
+    .topnav ul { order: 3; flex-basis: 100%; margin: 0 -16px; padding: 0 10px; }
+    .topnav ul a { padding: 10px 10px; font-size: 14px; }
+    #top, section.block { scroll-margin-top: 96px; }
     body { font-size: 16px; }
     .btn { width: 100%; justify-content: center; }
     .steps li { grid-template-columns: 40px 1fr; gap: 0 12px; }
@@ -247,13 +288,27 @@
 </head>
 <body>
 
-<header class="hero">
+<nav class="topnav" aria-label="페이지 메뉴">
+  <div class="wrap">
+    <a class="brand" href="#top">TUNEFALL</a>
+    <ul>
+      <li><a href="#features">소개</a></li>
+      <li><a href="#start">시작하기</a></li>
+      <li><a href="#patchnotes">패치 노트</a></li>
+      <li><a href="#faq">자주 묻는 질문</a></li>
+      <li><a href="#specs">권장 사양</a></li>
+    </ul>
+    <a class="nav-dl" href="#download">다운로드</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
   <div class="wrap">
     <div>
       <h1 class="wordmark">TUNEFALL</h1>
       <p class="tagline">치고 싶은 곡, 링크만 넣으면 채보가 나와요</p>
       <p class="lede">곡 링크를 붙여넣고 조금만 기다리면 EASY, NORMAL, HARD 채보가 나와요. 같은 곡은 누가 넣어도 똑같은 채보가 나오니까 친구랑 점수 내기 하기 좋아요.</p>
-      <div class="actions">
+      <div class="actions" id="download">
         <a class="btn primary" href="https://github.com/hyunmu-rhythm/tunefall/releases/latest/download/TUNEFALL_Setup.exe">Windows용 다운로드</a>
         <a class="btn" href="https://github.com/hyunmu-rhythm/tunefall-android/releases/latest/download/TUNEFALL.apk">Android용 다운로드 (테스트)</a>
         <a class="btn" href="https://discord.gg/RJzgxMJq33" target="_blank" rel="noopener">Discord 참여하기</a>
@@ -333,7 +388,12 @@
     <div class="wrap">
       <h2>패치 노트</h2>
       <p class="intro">새 버전이 나오면 게임 켤 때 알려드려요. 업데이트해도 넣어둔 곡이랑 기록은 그대로예요.</p>
-      <div id="patch-list"><p class="notice">패치 노트를 불러오는 중이에요.</p></div>
+      <div class="tabs" role="tablist" aria-label="패치 노트 종류">
+        <button type="button" role="tab" id="tab-pc" aria-controls="patch-pc" aria-selected="true">PC (Windows)</button>
+        <button type="button" role="tab" id="tab-android" aria-controls="patch-android" aria-selected="false" tabindex="-1">Android</button>
+      </div>
+      <div id="patch-pc" role="tabpanel" aria-labelledby="tab-pc"><p class="notice">패치 노트를 불러오는 중이에요.</p></div>
+      <div id="patch-android" role="tabpanel" aria-labelledby="tab-android" hidden><p class="notice">패치 노트를 불러오는 중이에요.</p></div>
     </div>
   </section>
 
@@ -364,6 +424,13 @@
           <summary>판정이 늦거나 빠르게 느껴져요</summary>
           <div class="answer">
             <p>PC와 스피커마다 소리가 늦게 나오는 정도가 달라요. 설정의 싱크 조절 화면에서 한 번 맞추면 판정에 바로 반영돼요. 판정 아래에 FAST가 자주 뜨면 빨리, LATE가 자주 뜨면 늦게 치고 있는 거예요.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Android 에서는 곡을 어떻게 넣나요?</summary>
+          <div class="answer">
+            <p>Android 판은 곡을 직접 만들지 못하고, PC 에서 만든 곡을 가져와서 플레이해요. PC 의 곡 선택 화면에서 <strong>공유</strong>를 눌러 만든 zip 을 휴대폰으로 보낸 뒤(카카오톡, Quick Share 등), 게임의 <strong>곡 가져오기 (zip)</strong>로 골라 주세요.</p>
+            <p>APK 를 설치할 때 “출처를 알 수 없는 앱” 안내가 뜨면, 파일을 연 앱(예: 카카오톡)에 설치를 허용해 주면 돼요.</p>
           </div>
         </details>
         <details>
@@ -404,6 +471,7 @@
       <a href="https://discord.gg/RJzgxMJq33" target="_blank" rel="noopener">Discord</a>
       <a href="https://github.com/hyunmu-rhythm/tunefall" target="_blank" rel="noopener">GitHub</a>
       <a href="https://github.com/hyunmu-rhythm/tunefall/releases" target="_blank" rel="noopener">모든 버전</a>
+      <a href="https://github.com/hyunmu-rhythm/tunefall-android/releases" target="_blank" rel="noopener">Android 버전</a>
     </nav>
   </div>
 </footer>
@@ -411,24 +479,84 @@
 <script>
 /* =====================================================================
    1) 최신 버전과 패치 노트: GitHub 저장소의 파일을 그대로 읽어 와요.
-      배포할 때 version.txt, 패치노트.txt 만 고치면 홈페이지도 바뀌어요.
+      배포할 때 version.txt(Android 는 android_version.txt), 패치노트.txt 만 고치면 홈페이지도 바뀌어요.
    ===================================================================== */
-const RAW = "https://raw.githubusercontent.com/hyunmu-rhythm/tunefall/main/";
-const PATCH_URL = RAW + encodeURIComponent("패치노트.txt");
-const REPO_PATCH_PAGE = "https://github.com/hyunmu-rhythm/tunefall/blob/main/" + encodeURIComponent("패치노트.txt");
+// PC 판과 Android 판은 저장소가 따로예요. 각 저장소의 패치노트.txt 를 읽어 와요.
+const SOURCES = {
+  pc: {
+    raw: "https://raw.githubusercontent.com/hyunmu-rhythm/tunefall/main/",
+    page: "https://github.com/hyunmu-rhythm/tunefall/blob/main/",
+    versionFile: "version.txt", prefix: "v", box: "patch-pc"
+  },
+  android: {
+    raw: "https://raw.githubusercontent.com/hyunmu-rhythm/tunefall-android/main/",
+    page: "https://github.com/hyunmu-rhythm/tunefall-android/blob/main/",
+    versionFile: "android_version.txt", prefix: "Android v", box: "patch-android"
+  }
+};
+const PATCH_FILE = encodeURIComponent("패치노트.txt");
 
-fetch(RAW + "version.txt", { cache: "no-store" })
-  .then(r => { if (!r.ok) throw 0; return r.text(); })
-  .then(v => { document.getElementById("latest-version").innerHTML = "최신 버전 <strong>v" + escapeHtml(v.trim()) + "</strong>"; })
-  .catch(() => { document.getElementById("latest-version").textContent = "최신 버전은 다운로드 버튼으로 받을 수 있어요"; });
+function getText(url) {
+  return fetch(url, { cache: "no-store" }).then(r => { if (!r.ok) throw 0; return r.text(); });
+}
 
-fetch(PATCH_URL, { cache: "no-store" })
-  .then(r => { if (!r.ok) throw 0; return r.text(); })
-  .then(renderPatchNotes)
-  .catch(() => {
-    document.getElementById("patch-list").innerHTML =
-      '<p class="notice">패치 노트를 불러오지 못했어요. <a href="' + REPO_PATCH_PAGE + '" target="_blank" rel="noopener">GitHub에서 보기</a></p>';
+// 최신 버전: PC 와 Android 를 같이 보여줘요 (하나만 받아져도 그것만 보여줘요)
+Promise.allSettled([
+  getText(SOURCES.pc.raw + SOURCES.pc.versionFile),
+  getText(SOURCES.android.raw + SOURCES.android.versionFile)
+]).then(([pc, android]) => {
+  const parts = [];
+  if (pc.status === "fulfilled") parts.push("최신 버전 <strong>v" + escapeHtml(pc.value.trim()) + "</strong>");
+  if (android.status === "fulfilled") parts.push("Android <strong>v" + escapeHtml(android.value.trim()) + "</strong>");
+  const el = document.getElementById("latest-version");
+  if (parts.length) el.innerHTML = parts.join(" · ");
+  else el.textContent = "최신 버전은 다운로드 버튼으로 받을 수 있어요";
+});
+
+for (const src of Object.values(SOURCES)) {
+  getText(src.raw + PATCH_FILE)
+    .then(text => renderPatchNotes(text, src))
+    .catch(() => {
+      document.getElementById(src.box).innerHTML =
+        '<p class="notice">패치 노트를 불러오지 못했어요. <a href="' + src.page + PATCH_FILE + '" target="_blank" rel="noopener">GitHub에서 보기</a></p>';
+    });
+}
+
+// 패치 노트 탭: PC / Android
+(function () {
+  const tabs = [...document.querySelectorAll('#patchnotes [role="tab"]')];
+  function select(tab) {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute("aria-selected", on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    }
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => select(t));
+    t.addEventListener("keydown", e => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      const next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+      select(next); next.focus();
+    });
   });
+})();
+
+// 위쪽 메뉴: 지금 보고 있는 구역에 밑줄을 그어요
+(function () {
+  const links = [...document.querySelectorAll(".topnav ul a")];
+  const byId = Object.fromEntries(links.map(a => [a.getAttribute("href").slice(1), a]));
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      links.forEach(a => a.removeAttribute("aria-current"));
+      const a = byId[e.target.id];
+      if (a) a.setAttribute("aria-current", "true");
+    }
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  document.querySelectorAll("section.block[id], #top").forEach(sec => io.observe(sec));
+})();
 
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -465,9 +593,9 @@ function parsePatchNotes(text) {
   return versions;
 }
 
-function versionHtml(v, latest) {
+function versionHtml(v, latest, prefix) {
   let html = '<article class="version' + (latest ? " latest" : "") + '">' +
-    '<div class="version-head"><h3>v' + escapeHtml(v.version) + "</h3>" +
+    '<div class="version-head"><h3>' + escapeHtml(prefix + v.version) + "</h3>" +
     (v.date ? '<time datetime="' + escapeHtml(v.date) + '">' + escapeHtml(v.date) + "</time>" : "") +
     '</div><ul class="notes">';
   for (const g of v.groups) {
@@ -478,15 +606,15 @@ function versionHtml(v, latest) {
   return html + "</ul></article>";
 }
 
-function renderPatchNotes(text) {
+function renderPatchNotes(text, src) {
   const list = parsePatchNotes(text);
-  const box = document.getElementById("patch-list");
+  const box = document.getElementById(src.box);
   if (!list.length) { box.innerHTML = '<p class="notice">아직 패치 노트가 없어요.</p>'; return; }
   const SHOW = 2;  // 처음부터 펼쳐 둘 버전 수
-  let html = list.slice(0, SHOW).map((v, i) => versionHtml(v, i === 0)).join("");
+  let html = list.slice(0, SHOW).map((v, i) => versionHtml(v, i === 0, src.prefix)).join("");
   if (list.length > SHOW) {
     html += '<details class="older"><summary>이전 버전 ' + (list.length - SHOW) + "개 더 보기</summary>" +
-      list.slice(SHOW).map(v => versionHtml(v, false)).join("") + "</details>";
+      list.slice(SHOW).map(v => versionHtml(v, false, src.prefix)).join("") + "</details>";
   }
   box.innerHTML = html;
 }
