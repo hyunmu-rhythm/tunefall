@@ -1,19 +1,19 @@
 {
-    "version":  "1.4.1",
+    "version":  "1.4.2",
     "files":  [
                   {
                       "where":  "install",
                       "path":  "TUNEFALL.exe",
-                      "size":  104720816,
-                      "sha256":  "caebf1026993435347fe304f99dfb04858e5ddc4ff3610458d2232319c42f181",
-                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.1/install__TUNEFALL.exe"
+                      "size":  104719680,
+                      "sha256":  "6b9eba258c11b6aae936f614db69eb6df3886d00c16b2b41b18f979e3c120f0f",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.2/install__TUNEFALL.exe"
                   },
                   {
                       "where":  "install",
                       "path":  "uninstall.exe",
-                      "size":  11751065,
-                      "sha256":  "b7da31b0c608e60c00709cc0c76b7e5447de7fe2a298b09d7e30caac8aa34f95",
-                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/install__uninstall.exe"
+                      "size":  11750856,
+                      "sha256":  "57847be79483de75031f89eff155a58a838567105f21794b00f97aea170bcb0a",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.2/install__uninstall.exe"
                   },
                   {
                       "where":  "install",
@@ -25,16 +25,16 @@
                   {
                       "where":  "tools",
                       "path":  "generator.exe",
-                      "size":  557569948,
-                      "sha256":  "731d41398a4110c4728acc59f0f70911645e19819eda8fa7ecc9802bb86eef03",
-                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__generator.exe"
+                      "size":  557580272,
+                      "sha256":  "b5750b3c5dc73e60fecdf4855fe4be700cbf4164563c17fec5d7d41739f4a79a",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.2/tools__generator.exe"
                   },
                   {
                       "where":  "tools",
                       "path":  "convert_video.exe",
-                      "size":  6841968,
-                      "sha256":  "0e786fc10c4e447dff861f2c47cccd683d80446d645d17959d3ffb85878f59dc",
-                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.0/tools__convert_video.exe"
+                      "size":  6841636,
+                      "sha256":  "9fa260e7aeb21d4282f379e515026aeb912527cae27d5693937af773d9931bc4",
+                      "url":  "https://github.com/hyunmu-rhythm/tunefall/releases/download/v1.4.2/tools__convert_video.exe"
                   },
                   {
                       "where":  "tools",
