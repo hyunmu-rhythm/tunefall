@@ -533,6 +533,11 @@ for (const src of Object.values(SOURCES)) {
       document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
     }
   }
+  // 주소 끝이 #patchnotes-android 면 Android 탭을 열고 패치 노트로 이동해요 (디스코드 Android 공지 링크)
+  if (location.hash === "#patchnotes-android") {
+    select(document.getElementById("tab-android"));
+    document.getElementById("patchnotes").scrollIntoView();
+  }
   tabs.forEach((t, i) => {
     t.addEventListener("click", () => select(t));
     t.addEventListener("keydown", e => {
