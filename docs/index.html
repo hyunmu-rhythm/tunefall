@@ -242,6 +242,8 @@
   .faq details[open] summary::after { content: "−"; }
   .faq .answer { padding: 0 0 22px; color: var(--mute); }
   .faq .answer p { margin: 0 0 8px; }
+  .faq .answer ul { margin: 0 0 8px; padding-left: 20px; }
+  .faq .answer li { margin: 0 0 4px; }
   code {
     font-family: Consolas, "D2Coding", monospace; font-size: 14px;
     background: var(--dusk); padding: 2px 6px; border-radius: 4px; color: var(--ink);
@@ -420,6 +422,22 @@
             <p>인터넷 연결을 확인한 뒤 다시 시도해 보세요. 그래도 안 되면 오류 창의 <strong>자세히 보기</strong> 내용을 Discord에 보내 주세요. 오류는 개발자에게도 자동으로 전달돼요.</p>
           </div>
         </details>
+        <details id="update-errors">
+          <summary>런처에 업데이트 오류 번호(E01~E08)가 떠요</summary>
+          <div class="answer">
+            <p>대부분 <strong>[다시 시도]</strong>를 누르면 해결돼요. 계속되면 오류 번호를 Discord에 알려 주세요.</p>
+            <ul>
+              <li><strong>E01</strong> 업데이트 정보를 받지 못함 → 인터넷 확인. 지금 설치된 버전으로 플레이는 할 수 있어요.</li>
+              <li><strong>E02</strong> 파일을 받다가 연결이 끊김 → 인터넷 확인 후 다시 시도</li>
+              <li><strong>E03</strong> 서버에서 파일을 찾지 못함 → 업데이트를 올리는 중일 수 있어요. 몇 분 뒤 다시 시도</li>
+              <li><strong>E04</strong> 받은 파일이 손상됨 → 다시 시도</li>
+              <li><strong>E05</strong> 게임 파일이 사용 중 → 게임(TUNEFALL)을 끄고 다시 시도</li>
+              <li><strong>E06</strong> 파일을 저장하지 못함 → 저장 공간이 충분한지, 백신 프로그램이 막고 있지 않은지 확인</li>
+              <li><strong>E07</strong> 런처 업데이트 실패 → 게임 업데이트는 그대로 진행돼요. 다음 실행 때 다시 시도해요.</li>
+              <li><strong>E08</strong> 게임을 실행하지 못함 → 런처의 [파일 검사]를 눌러 주세요.</li>
+            </ul>
+          </div>
+        </details>
         <details>
           <summary>판정이 늦거나 빠르게 느껴져요</summary>
           <div class="answer">
@@ -533,6 +551,9 @@ for (const src of Object.values(SOURCES)) {
       document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
     }
   }
+  // 주소 끝이 자주 묻는 질문 항목(#update-errors 등)이면 그 항목을 펼쳐서 보여줘요 (런처의 [오류 도움말])
+  const faqItem = location.hash && document.querySelector("details" + location.hash);
+  if (faqItem) { faqItem.open = true; faqItem.scrollIntoView(); }
   // 주소 끝이 #patchnotes-android 면 Android 탭을 열고 패치 노트로 이동해요 (디스코드 Android 공지 링크)
   if (location.hash === "#patchnotes-android") {
     select(document.getElementById("tab-android"));
